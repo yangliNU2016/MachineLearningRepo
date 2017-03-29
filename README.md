@@ -1,2 +1,2 @@
 # MachineLearningRepo
-A repository keeping track of machine learning problems I practice with in Python 
+A repository containing machine learning problems I practice with in Python 
