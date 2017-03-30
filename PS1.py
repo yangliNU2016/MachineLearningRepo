@@ -34,20 +34,20 @@ class Node:
 		return self.children
 		
 	
-		
-
 def breadth_first_search(root):
 	
 	'''
 	given the root node, will complete a breadth-first-search on the tree, returning the value of each node in the correct order
 	'''
+	ret = ''
 	if root.value != None:
-		print str(root.get_value()) + ' ' 
+		ret += str(root.get_value()) + ' ' 
 	if root.children != None:
 		for key, child in root.children.iteritems():
-			print str(child.get_value()) + ' '
+			ret += str(child.get_value()) + ' '
 		for key, child in root.children.iteritems():
 			breadth_first_search(child)
+	return ret[:-1]
 
 def tester():
 	a = Node()
@@ -57,7 +57,7 @@ def tester():
 	a.children = {1: b}
 	print str(a.get_value()) + ' should be 5.'
 	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
-#	print str(breadth_first_search(a)) + ' should be 5 7.'
+	print str(breadth_first_search(a)) + ' should be 5 7.'
 	
 if __name__ == "__main__":
     tester()
