@@ -33,9 +33,7 @@ class Node:
 		given a node, will return the children of this node
 		'''
 		return self.children
-				
-				
-			
+							
 def breadth_first_search(root):
 	
 	'''
@@ -46,14 +44,13 @@ def breadth_first_search(root):
 	if root == None: return ret
 	q.append(root)
 	while len(q) != 0:
-		if q[0].children != None:
+		if q[0].get_children() != None:
 			for key in q[0].children:
 				q.append(q[0].children[key])
-		if q[0].get_value != None:
-			ret += str(q[0].get_value)
+		if q[0].get_value() != None:
+			ret += str(q[0].get_value()) + ' '
 		q.popleft()
-	print ret
-	return ret
+	return ret[:-1]
 		
 def tester():
 	a = Node()
@@ -65,11 +62,14 @@ def tester():
 	a.children = {1: b, 2: c}   
 	d = Node()
 	d.value = 10
-	b.children = {1: d}
+	e = Node()
+	b.children = {1: d, 2: e}
+	f = Node()
+	f.value = 1
+	c.children = {1: f}
 	print str(a.get_value()) + ' should be 5.'
-	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
-	breadth_first_search(a)
-#	print str(breadth_first_search(a)) + ' should be 5 7 8 10.'
+#	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
+	print str(breadth_first_search(a)) + ' should be 5 7 8 10 1.'
 	
 if __name__ == "__main__":
     tester()
