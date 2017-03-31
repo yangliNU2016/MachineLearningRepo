@@ -68,7 +68,7 @@ def tester():
 	f.value = 1
 	c.children = {1: f}
 	print str(a.get_value()) + ' should be 5.'
-#	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
+	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
 	print str(breadth_first_search(a)) + ' should be 5 7 8 10 1.'
 	
 if __name__ == "__main__":
