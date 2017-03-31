@@ -13,6 +13,7 @@
 #
 # The tree data structure is a node with value 5, with a dictionary of children {1: b, 2: c} where b is a node with value 2 and c is a node with value 3.  Both b and c have children of None.
 # The bfs traversal of the above tree should return the string '5 2 3'
+from collections import deque 
 class Node:
 	def __init__(self):
 		self.value = None
@@ -32,32 +33,43 @@ class Node:
 		given a node, will return the children of this node
 		'''
 		return self.children
-		
-	
+				
+				
+			
 def breadth_first_search(root):
 	
 	'''
-	given the root node, will complete a breadth-first-search on the tree, returning the value of each node in the correct order
+	given the root node, will complete a breadth-first-search on the tree, returning the value of each node in the correct order	
 	'''
 	ret = ''
-	if root.value != None:
-		ret += str(root.get_value()) + ' ' 
-	if root.children != None:
-		for key, child in root.children.iteritems():
-			ret += str(child.get_value()) + ' '
-		for key, child in root.children.iteritems():
-			breadth_first_search(child)
-	return ret[:-1]
-
+	q = deque([])
+	if root == None: return ret
+	q.append(root)
+	while len(q) != 0:
+		if q[0].children != None:
+			for key in q[0].children:
+				q.append(q[0].children[key])
+		if q[0].get_value != None:
+			ret += str(q[0].get_value)
+		q.popleft()
+	print ret
+	return ret
+		
 def tester():
 	a = Node()
 	a.value = 5
-        b = Node()
+	b = Node()
 	b.value = 7
-	a.children = {1: b}
+	c = Node()
+	c.value = 8
+	a.children = {1: b, 2: c}   
+	d = Node()
+	d.value = 10
+	b.children = {1: d}
 	print str(a.get_value()) + ' should be 5.'
 	print str(a.get_children()) + ' should be {1: ' + str(b) + '}.'
-	print str(breadth_first_search(a)) + ' should be 5 7.'
+	breadth_first_search(a)
+#	print str(breadth_first_search(a)) + ' should be 5 7 8 10.'
 	
 if __name__ == "__main__":
     tester()
