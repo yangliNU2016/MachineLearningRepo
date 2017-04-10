@@ -8,6 +8,9 @@ def ID3(examples, default):
   and the target class variable is a special attribute with the name "Class".
   Any missing attributes are denoted with a value of "?"
   '''
+  if examples is None:
+	return default
+  
 
 def prune(node, examples):
   '''
@@ -27,3 +30,10 @@ def evaluate(node, example):
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
+
+def ifSameClass (examples) :
+  '''
+  Takes an array of examples returns true if the examples have the same clssification,
+  otherwise returns false
+  '''
+  
