@@ -1,7 +1,9 @@
-import ID3, parse, random
+#import ID3, parse, random
+import ID3
 
 def testID3AndEvaluate():
   data = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=1)]
+  '''
   tree = ID3.ID3(data, 0)
   if tree != None:
     ans = ID3.evaluate(tree, dict(a=1, b=0))
@@ -11,6 +13,13 @@ def testID3AndEvaluate():
       print "ID3 test succeeded."
   else:
     print "ID3 test failed -- no tree returned"
+  '''
+  ans = ID3.ID3(data, 0)
+  if ans != 1:
+    print "ID3 test failed."
+  else:
+    print "ID3 test succeeded."
+  
 
 def testPruning():
   data = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=1), dict(a=0, b=1, Class=0), dict(a=0, b=0, Class=1)]
@@ -87,4 +96,7 @@ def testPruningOnHouseData(inFile):
   print withPruning
   print withoutPruning
   print "average with pruning",sum(withPruning)/len(withPruning)," without: ",sum(withoutPruning)/len(withoutPruning)
-  
+ 
+if __name__ == '__main__':
+	testID3AndEvaluate()
+	

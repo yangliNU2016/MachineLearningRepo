@@ -1,4 +1,4 @@
-from node import Node
+#from node import Node
 import math
 
 def ID3(examples, default):
@@ -10,6 +10,8 @@ def ID3(examples, default):
   '''
   if examples is None:
 	return default
+  if ifSameClass(examples):
+	return examples[0].get('Class')
   
 
 def prune(node, examples):
@@ -31,9 +33,21 @@ def evaluate(node, example):
   assigns to the example.
   '''
 
-def ifSameClass (examples) :
+def ifSameClass (examples):
   '''
   Takes an array of examples returns true if the examples have the same clssification,
   otherwise returns false
   '''
-  
+  ret = True
+  clas = examples[0].get('Class')
+  for item in examples:
+	if item.get('Class') != clas:
+		return False
+  return ret
+ 
+def chooseAttribute (examples):
+   '''
+   Takes an array of examples return the attribute that has most information gain
+   '''
+   
+	
