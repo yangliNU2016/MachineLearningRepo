@@ -12,6 +12,7 @@ def ID3(examples, default):
 	return default
   if ifSameClass(examples):
 	return examples[0].get('Class')
+  calcTargetEntropy(examples)
   
 
 def prune(node, examples):
@@ -45,9 +46,31 @@ def ifSameClass (examples):
 		return False
   return ret
  
-def chooseAttribute (examples):
+def calcTargetEntropy(examples):
    '''
-   Takes an array of examples return the attribute that has most information gain
+   Takes an array of examples return the entropy of the target
    '''
+   cls = dict()
+   total = 0.0
+   for example in examples:
+	total += 1.0
+	if cls.has_key(example.get('Class')):
+		cls[example.get('Class')] += 1
+	else:
+		cls[example.get('Class')] = 1
+		
+   for cl in cls.keys():
+	cls[cl] = float("{0:.2f}".format(cls[cl] / total))
+
+   entropy = 0.0
+   for cl in cls.keys():
+	entropy += - (cls[cl] * math.log(cls[cl], 2))
+   
+   print entropy
+	
+   
+		
+		
+	
    
 	
