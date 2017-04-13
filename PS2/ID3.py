@@ -12,7 +12,8 @@ def ID3(examples, default):
 	return default
   if ifSameClass(examples):
 	return examples[0].get('Class')
-  calcTargetEntropy(examples)
+  eT = calcTargetEntropy(examples, 'Class')
+  
   
 
 def prune(node, examples):
@@ -46,7 +47,7 @@ def ifSameClass (examples):
 		return False
   return ret
  
-def calcTargetEntropy(examples):
+def calcTargetEntropy(examples, attribute):
    '''
    Takes an array of examples return the entropy of the target
    '''
@@ -54,20 +55,22 @@ def calcTargetEntropy(examples):
    total = 0.0
    for example in examples:
 	total += 1.0
-	if cls.has_key(example.get('Class')):
-		cls[example.get('Class')] += 1
+	if cls.has_key(example.get(attribute)):
+		cls[example.get(attribute)] += 1
 	else:
-		cls[example.get('Class')] = 1
+		cls[example.get(attribute)] = 1
 		
    for cl in cls.keys():
 	cls[cl] = float("{0:.2f}".format(cls[cl] / total))
 
    entropy = 0.0
    for cl in cls.keys():
-	entropy += - (cls[cl] * math.log(cls[cl], 2))
+	entropy -= cls[cl] * math.log(cls[cl], 2)
    
-   print entropy
+   return entropy
+  
 	
+		
    
 		
 		
