@@ -1,4 +1,4 @@
-#from node import Node
+from node import Node
 import math
 
 def ID3(examples, default):
@@ -12,7 +12,40 @@ def ID3(examples, default):
 	return default
   if ifSameClass(examples):
 	return examples[0].get('Class')
-  buildTree(examples)
+  node = buildTree(examples)
+  for value in node.values:
+	selectedData = []
+	for example in examples:
+		selectedData.append({k: example[k] for k in list(set(example.keys()) - set(node.getAncestors()))})
+	print selectedData
+	print "--------------------------"
+	index = 0
+	indicesSelected = []
+	while index < len(selectedData):
+		if selectedData[index][node.label] == node.values[value]:
+			indicesSelected.append(index)
+		index += 1
+	selectedData1 = []
+	for index in indicesSelected:
+		selectedData1.append(selectedData[index])
+	print selectedData1
+	'''
+	selectedData2 = []
+	for data in selectedData1:
+		selectedData2.append({k: example[k] for k in list(set(data.keys()) - set([node.label]))})
+	print selectedData2
+#	nodeSub = buildTree(selectedData1, )
+	'''
+	'''
+	lf = Node()
+	lf.label = value
+	lf.parent = node
+	node.children[lf] = lf.label
+    '''	
+		
+
+	
+	
   
   
 
@@ -79,7 +112,7 @@ def calcTargetEntropy(examples, attribute, value):
    return entropy
    
 def buildTree(examples):
-#	rt = Node()
+	rt = Node() 
 	eT = calcTargetEntropy(examples, 'Class', None)
 	eTx = dict()
 	
@@ -102,25 +135,26 @@ def buildTree(examples):
 		for value in atts.get(att):
 			atts.get(att)[value] /= total
 
-	
 	etp = 0.0		
 	for att in atts:
 		for value in atts.get(att):
-			print calcTargetEntropy(examples, att, value)
 			etp += atts.get(att)[value] * calcTargetEntropy(examples, att, value)
 		eTx[att] = eT - etp
 		etp = 0.0
-	print eTx
-		
 	
+	infoGainMax = max(eTx.values())
+	for attr in eTx.keys():
+		if eTx[attr] == infoGainMax:
+			rt.label = attr
+	
+	for att in atts:
+		if (att == rt.label):
+			for value in atts.get(att):
+				rt.values.append(value)
+				
+	return rt
 
-	'''
-	for attribute in examples[0]:
-		if attribute != 'Class':
-			
-			calcTargetEntropy(examples, attribute)
-			#eTx[attribute] = eT - calcTargetEntropy(examples, attribute)
-	'''
+		
 	
   
 	
