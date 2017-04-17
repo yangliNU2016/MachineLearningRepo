@@ -9,46 +9,35 @@ def ID3(examples, default):
   Any missing attributes are denoted with a value of "?"
   '''
   if examples is None:
-	return default
+	df = Node()
+	df.label = default
+	return df
   if ifSameClass(examples):
-	return examples[0].get('Class')
-  node = buildTree(examples)
-  for value in node.values:
-	selectedData = []
-	for example in examples:
-		selectedData.append({k: example[k] for k in list(set(example.keys()) - set(node.getAncestors()))})
-	print selectedData
-	print "--------------------------"
-	index = 0
-	indicesSelected = []
-	while index < len(selectedData):
-		if selectedData[index][node.label] == node.values[value]:
-			indicesSelected.append(index)
-		index += 1
-	selectedData1 = []
-	for index in indicesSelected:
-		selectedData1.append(selectedData[index])
-	print selectedData1
-	'''
-	selectedData2 = []
-	for data in selectedData1:
-		selectedData2.append({k: example[k] for k in list(set(data.keys()) - set([node.label]))})
-	print selectedData2
-#	nodeSub = buildTree(selectedData1, )
-	'''
-	'''
-	lf = Node()
-	lf.label = value
-	lf.parent = node
-	node.children[lf] = lf.label
-    '''	
-		
+	ret = Node()
+	ret.label = examples[0].get('Class')
+	return ret
+  if ifNoAttribute(examples):
+	return mostCommonClass(examples)
+  else:
+	node = chooseAttribute(examples)
+	for value in node.values:
+		index = 0
+		indicesSelected = []
+		while index < len(examples):
+			if examples[index][node.label] == value:
+				indicesSelected.append(index)
+			index += 1
+		selectedData = []
+		for i in indicesSelected:
+			selectedData.append(examples[i])
+		selectedData1 = []
+		for data in selectedData:
+			selectedData1.append({k: data[k] for k in list(set(data.keys()) - set([node.label]))})
+		nodeSub = ID3(selectedData1, default)
+		node.children[value] = nodeSub
+	return node
 
-	
-	
-  
-  
-
+			
 def prune(node, examples):
   '''
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
@@ -68,7 +57,7 @@ def evaluate(node, example):
   assigns to the example.
   '''
 
-def ifSameClass (examples):
+def ifSameClass(examples):
   '''
   Takes an array of examples returns true if the examples have the same clssification,
   otherwise returns false
@@ -79,7 +68,26 @@ def ifSameClass (examples):
 	if item.get('Class') != clas:
 		return False
   return ret
- 
+
+def ifNoAttribute(examples):
+	ret = True
+	for key in examples[0].keys():
+		if examples[0][key] != 'Class':
+			ret = False
+	return ret
+
+def mostCommonClass(examples):
+	clses = dict()
+	for example in examples:
+		if clses.has_key(example.get('Class')):
+			clses[example.get('Class')] += 1
+		else: 
+			clses[example.get('Class')] = 1	
+	mostCommonCls = max(clses.values())
+	ret = Node()
+	ret.label = mostCommonCls
+	return ret
+  
 def calcTargetEntropy(examples, attribute, value):
    '''
    Takes an array of examples return the entropy of the target
@@ -111,7 +119,7 @@ def calcTargetEntropy(examples, attribute, value):
 	entropy -= cls[cl] * math.log(cls[cl], 2)
    return entropy
    
-def buildTree(examples):
+def chooseAttribute(examples):
 	rt = Node() 
 	eT = calcTargetEntropy(examples, 'Class', None)
 	eTx = dict()

@@ -14,9 +14,27 @@ def testID3AndEvaluate():
   else:
     print "ID3 test failed -- no tree returned"
   '''
-  data = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=2), dict(a=0, b=1, Class=3), dict(a=0, b=0, Class=1)]
-  tree = ID3.ID3(data, 0)
+  '''
+  data = [{'a': 1, 'b': 0, 'Class': 1}, {'a': 1, 'b': 1, 'Class': 2}, {'a': 0, 'b': 1, 'Class': 3}, {'a': 0, 'b': 0, 'Class': 1}]
+  '''
+  data = [dict(Outlook='Rainy', Temp='Hot', Humidity='High', Windy='False', Class='No'), 
+		dict(Outlook='Rainy', Temp='Hot', Humidity='High', Windy='True', Class='No'), 
+		dict(Outlook='Overcast', Temp='Hot', Humidity='High', Windy='False', Class='Yes'), 
+		dict(Outlook='Sunny', Temp='Mild', Humidity='High', Windy='False', Class='Yes'),
+		dict(Outlook='Sunny', Temp='Cool', Humidity='Normal', Windy='False', Class='Yes'),
+		dict(Outlook='Sunny', Temp='Cool', Humidity='Normal', Windy='True', Class='No'),
+		dict(Outlook='Overcast', Temp='Cool', Humidity='Normal', Windy='True', Class='Yes'),
+		dict(Outlook='Rainy', Temp='Mild', Humidity='High', Windy='False', Class='No'),
+		dict(Outlook='Rainy', Temp='Cool', Humidity='Normal', Windy='False', Class='Yes'),
+		dict(Outlook='Sunny', Temp='Mild', Humidity='Normal', Windy='False', Class='Yes'),
+		dict(Outlook='Rainy', Temp='Mild', Humidity='Normal', Windy='True', Class='Yes'),
+		dict(Outlook='Overcast', Temp='Mild', Humidity='High', Windy='True', Class='Yes'),
+		dict(Outlook='Overcast', Temp='Hot', Humidity='Normal', Windy='False', Class='Yes'),
+		dict(Outlook='Sunny', Temp='Mild', Humidity='High', Windy='True', Class='No')]
+  		
+  tree = ID3.ID3(data, 'Yes')
 
+  
   
 
 def testPruning():
