@@ -23,7 +23,7 @@ def testID3AndEvaluate():
 		dict(Outlook='Sunny', Temp='Mild', Humidity='High', Windy='False', Class='Yes'),
 		dict(Outlook='Sunny', Temp='Cool', Humidity='Normal', Windy='False', Class='Yes'),
 		dict(Outlook='Sunny', Temp='Cool', Humidity='Normal', Windy='True', Class='No'),
-		dict(Outlook='Overcast', Temp='Cool', Humidity='Normal', Windy='True', Class='Yes'),
+		dict(Outlook='Overcast', Temp='Cool', Humidity='?', Windy='True', Class='Yes'),
 		dict(Outlook='Rainy', Temp='Mild', Humidity='High', Windy='False', Class='No'),
 		dict(Outlook='Rainy', Temp='Cool', Humidity='Normal', Windy='False', Class='Yes'),
 		dict(Outlook='Sunny', Temp='Mild', Humidity='Normal', Windy='False', Class='Yes'),
@@ -33,10 +33,9 @@ def testID3AndEvaluate():
 		dict(Outlook='Sunny', Temp='Mild', Humidity='High', Windy='True', Class='No')]
   		
   tree = ID3.ID3(data, 'Yes')
-
+  print ID3.test(tree, data)
   
   
-
 def testPruning():
   data = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=1), dict(a=0, b=1, Class=0), dict(a=0, b=0, Class=1)]
   validationData = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=1), dict(a=0, b=0, Class=0), dict(a=0, b=0, Class=0)]
@@ -115,4 +114,5 @@ def testPruningOnHouseData(inFile):
  
 if __name__ == '__main__':
 	testID3AndEvaluate()
+	#testID3AndTest()
 	

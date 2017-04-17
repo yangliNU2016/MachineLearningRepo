@@ -2,6 +2,13 @@ from node import Node
 import math
 
 def ID3(examples, default):
+  for example in examples:
+	for key in example.keys():
+		if example[key] == '?':
+			example[key] = handleMissingAttribute(examples, key, example['Class'])
+  return ID3Wrapped(examples, default, True)
+
+def ID3Wrapped(examples, default, noMissingdata):
   '''
   Takes in an array of examples, and returns a tree (an instance of Node) 
   trained on the examples.  Each example is a dictionary of attribute:value pairs,
@@ -33,22 +40,27 @@ def ID3(examples, default):
 		selectedData1 = []
 		for data in selectedData:
 			selectedData1.append({k: data[k] for k in list(set(data.keys()) - set([node.label]))})
-		nodeSub = ID3(selectedData1, default)
+		nodeSub = ID3Wrapped(selectedData1, default, True)
 		node.children[value] = nodeSub
-	return node
-
+	return node	
 			
 def prune(node, examples):
   '''
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
   to improve accuracy on the validation data; the precise pruning strategy is up to you.
   '''
+  
 
 def test(node, examples):
   '''
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
+  numOfCorrectCls = 0.0
+  for example in examples:
+	if example['Class'] == evaluate(node, example):
+		numOfCorrectCls += 1.0
+  return numOfCorrectCls / len(examples)
 
 
 def evaluate(node, example):
@@ -56,7 +68,17 @@ def evaluate(node, example):
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
+  if node is None or node.label is None:
+	return "Cannot classify the given example."
 
+  ret = ''
+  if node.children == {}:
+	return node.label
+  for child in node.children:
+	if child == example.get(node.label):
+		ret = evaluate(node.children[child], example)
+  return ret
+  
 def ifSameClass(examples):
   '''
   Takes an array of examples returns true if the examples have the same clssification,
@@ -87,6 +109,25 @@ def mostCommonClass(examples):
 	ret = Node()
 	ret.label = mostCommonCls
 	return ret
+
+def handleMissingAttribute(examples, attribute, cls):
+	map = dict()
+	for example in examples:
+		if example['Class'] == cls:
+			if map.has_key(example[attribute]):
+				map[example[attribute]] += 1
+			else:
+				map[example[attribute]] = 1
+	mostCommonAttCnt = max(map.values())
+	mostCommonAtt = ''
+	for att in map.keys():
+		if map[att] == mostCommonAttCnt:
+			mostCommonAtt = att
+	if mostCommonAtt == '?':
+		for att in map.keys():
+			if att != mostCommonAtt:
+				mostCommonAtt = att
+	return mostCommonAtt
   
 def calcTargetEntropy(examples, attribute, value):
    '''
