@@ -62,7 +62,7 @@ def testPruningOnHouseData(inFile):
   withoutPruningAve = []
   data = parse.parse(inFile)
   trainingSize = 10
-  while trainingSize < 301:
+  while trainingSize < 300:
 	for i in range(100):
 		random.shuffle(data)
 		train = data[:trainingSize]
@@ -95,14 +95,18 @@ def testPruningOnHouseData(inFile):
 	withPruningAve.append(sum(withPruning)/len(withPruning))
 	withoutPruningAve.append(sum(withoutPruning)/len(withoutPruning))
 	trainingSize += 1
-  num_examples = [i for i in 10 + range(290)]  
+  num_examples = [i for i in range(290)]
+  #print len(withPruningAve)
+  #print len(withoutPruningAve)
+
   plt.title('Training curve with and without pruning')
-  plt.plot(num_examples, withoutPruning, label="without pruning")
+  plt.plot(num_examples, withoutPruningAve, label="without pruning")
   plt.xlabel('Number of training examples')
-  plt.plot(num_examples, withPruning, label="with pruning")
+  plt.plot(num_examples, withPruningAve, label="with pruning")
   plt.ylabel('Accuracy on testing set')
   plt.legend()
   plt.show()
+
   
  
 if __name__ == '__main__':
