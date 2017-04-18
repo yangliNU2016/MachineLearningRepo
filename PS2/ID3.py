@@ -44,12 +44,12 @@ def ID3Wrapped(examples, default, noMissingdata):
 		node.children[value] = nodeSub
 	return node	
 
-'''	
+
 def prune(node, examples):
-  
-#  Takes in a trained tree and a validation set of examples.  Prunes nodes in order
-#  to improve accuracy on the validation data; the precise pruning strategy is up to you.
-  
+  '''
+  Takes in a trained tree and a validation set of examples.  Prunes nodes in order
+  to improve accuracy on the validation data; the precise pruning strategy is up to you.
+  '''
   #divide examples into training set (2/3) and validation set (1/3)
   numOfTraining = 2 * len(examples) / 3
   numToCount = 0
@@ -57,11 +57,26 @@ def prune(node, examples):
   while numToCount < numOfTraining:
 	training.append(examples[numToCount])
 	numToCount += 1
+  
+  numOfCount = numOfTraining  
   validation = []
-  while numToCount < len(examples):
-	validation.append(examples[numToCount])
-	numToCount += 1
-
+  while numOfCount < len(examples):
+	validation.append(examples[numOfCount])
+	numOfCount += 1
+	
+  #Most common class in the training set
+  clss = dict()
+  for s in training:
+	if clss.has_key(s['Class']):
+		clss[s['Class']] += 1
+	else:
+		clss[s['Class']] = 1
+  numOfMostCommonClss = max(clss.values())
+  mostCommonCls = ''
+  for cls in clss:
+	if clss[cls] == numOfMostCommonClss:
+		mostCommonCls = cls
+  
   #Construct a decision tree based on training set
   root = ID3(training, node.label)
   
@@ -71,13 +86,31 @@ def prune(node, examples):
 		if d[key] == '?':
 			d[key] = handleMissingAttribute(training, key, d['Class'])
   
-  #Test the decision tree on each of the validation data examples and update num of error
-  # on each node
-  for d in validation:
-	cls = evaluate(node, d)
-'''  	
+  node = root		
   
-
+def traverseLeafNodes(node, set, cls, numOfIncorrectCls):
+	for child in node.children:
+		if node.children[child].pruneMe:
+			temp = node.children[child].label
+			node.children[child].label = cls
+			newTestResult = numOfCorrectClsOnValidationSet(node, set)
+			if newTestResult > numOfCorrectCls:
+				node.children[child].label = temp
+			else:
+				numOfCorrectCls = newTestResult
+	return node
+			
+  
+def numOfCorrectClsOnValidationSet(node, set):
+	#Test the decision tree on each of the validation data examples and update num of error
+	# on each node
+	numOfIncorrectCls = 0.0
+	for d in set:
+		cls = evaluate(node, d)
+		if cls != d['Class']:
+			numOfIncorrectCls += 1.0
+	return numOfIncorrectCls
+	
 def test(node, examples):
   '''
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
@@ -100,11 +133,7 @@ def evaluate(node, example):
 
   ret = ''
   if node.children == {}:
-	if example['Class'] != '?':
-		if node.label != example['Class']:
-			node.performance[1] += 1
-		else:
-			node.performance[0] += 1
+	node.pruneMe = True
 	return node.label
   for child in node.children:
 	if child == example.get(node.label):
@@ -126,7 +155,7 @@ def ifSameClass(examples):
 def ifNoAttribute(examples):
 	ret = True
 	for key in examples[0].keys():
-		if examples[0][key] != 'Class':
+		if key != 'Class':
 			ret = False
 	return ret
 
@@ -186,9 +215,6 @@ def calcTargetEntropy(examples, attribute, value):
 				cls[example.get('Class')] = 1
 
    for cl in cls.keys():
-	cls[cl] = float("{0:.2f}".format(cls[cl] / total))
-
-   for cl in cls.keys():
 	entropy -= cls[cl] * math.log(cls[cl], 2)
    return entropy
    
@@ -231,7 +257,6 @@ def chooseAttribute(examples):
 	for att in atts:
 		if (att == rt.label):
 			for value in atts.get(att):
-				#rt.values.append(value)
 				rt.values[value] = atts.get(att)[value]
 	return rt
 
