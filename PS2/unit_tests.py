@@ -31,9 +31,13 @@ def testID3AndEvaluate():
 		dict(Outlook='Overcast', Temp='Mild', Humidity='High', Windy='True', Class='Yes'),
 		dict(Outlook='Overcast', Temp='Hot', Humidity='Normal', Windy='False', Class='Yes'),
 		dict(Outlook='Sunny', Temp='Mild', Humidity='High', Windy='True', Class='No')]
-  		
+#  ID3.prune(None, data)
   tree = ID3.ID3(data, 'Yes')
-  print ID3.test(tree, data)
+  print tree.values
+  print tree.children['Rainy'].values
+  print tree.children['Overcast'].values
+  print tree.children['Sunny'].values  
+#  print ID3.test(tree, data)
   
   
 def testPruning():

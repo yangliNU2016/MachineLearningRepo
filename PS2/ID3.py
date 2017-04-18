@@ -43,12 +43,39 @@ def ID3Wrapped(examples, default, noMissingdata):
 		nodeSub = ID3Wrapped(selectedData1, default, True)
 		node.children[value] = nodeSub
 	return node	
-			
+
+'''	
 def prune(node, examples):
-  '''
-  Takes in a trained tree and a validation set of examples.  Prunes nodes in order
-  to improve accuracy on the validation data; the precise pruning strategy is up to you.
-  '''
+  
+#  Takes in a trained tree and a validation set of examples.  Prunes nodes in order
+#  to improve accuracy on the validation data; the precise pruning strategy is up to you.
+  
+  #divide examples into training set (2/3) and validation set (1/3)
+  numOfTraining = 2 * len(examples) / 3
+  numToCount = 0
+  training = []
+  while numToCount < numOfTraining:
+	training.append(examples[numToCount])
+	numToCount += 1
+  validation = []
+  while numToCount < len(examples):
+	validation.append(examples[numToCount])
+	numToCount += 1
+
+  #Construct a decision tree based on training set
+  root = ID3(training, node.label)
+  
+  #Handle missing attribute(s) in validation set
+  for d in training:
+	for key in d.keys():
+		if d[key] == '?':
+			d[key] = handleMissingAttribute(training, key, d['Class'])
+  
+  #Test the decision tree on each of the validation data examples and update num of error
+  # on each node
+  for d in validation:
+	cls = evaluate(node, d)
+'''  	
   
 
 def test(node, examples):
@@ -73,6 +100,11 @@ def evaluate(node, example):
 
   ret = ''
   if node.children == {}:
+	if example['Class'] != '?':
+		if node.label != example['Class']:
+			node.performance[1] += 1
+		else:
+			node.performance[0] += 1
 	return node.label
   for child in node.children:
 	if child == example.get(node.label):
@@ -199,8 +231,8 @@ def chooseAttribute(examples):
 	for att in atts:
 		if (att == rt.label):
 			for value in atts.get(att):
-				rt.values.append(value)
-				
+				#rt.values.append(value)
+				rt.values[value] = atts.get(att)[value]
 	return rt
 
 		
