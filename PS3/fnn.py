@@ -146,15 +146,16 @@ class Layer(object):
         #     weighted sum of inputs plus bias, a matrix of shape (N, H).
         #     N is the number of data points.
         #     H is the number of hidden units in this layer.
-        scores = np.zeros((inputs.shape[0], self.w.shape[1]))
-
+        scores = np.dot(inputs, self.w) + (self.b + np.zeros((inputs.shape[0], 1)))
+		
         # The non-linear transformation.
         # outputs:
         #     activations of this layer, a matrix of shape (N, H).
         #     N is the number of data points.
         #     H is the number of hidden units in this layer.
-        activations = np.zeros_like(scores)
-
+        func = np.vectorize(self.activate)
+        activations = func(scores)
+		
         # End of the code to modify
         #########################################################
 
@@ -230,27 +231,30 @@ class Layer(object):
         #     A matrix of shape (N, H)
         #     N is the number of data points.
         #     H is the number of hidden units in this layer.
-        d_scores = np.zeros_like(self.a)
-
+        d_scores = d_outputs * self.d_activate(self.a)
+		
         # self.d_b:
         #     Derivatives of the loss w.r.t the bias, averaged over all data points.
         #     A matrix of shape (1, H)
         #     H is the number of hidden units in this layer.
-        self.d_b = np.zeros_like(self.b)
-
+        self.d_b = np.mean(d_scores, axis = 0)
+		
         # self.d_w:
         #     Derivatives of the loss w.r.t the weight matrix, averaged over all data points.
         #     A matrix of shape (H_-1, H)
         #     H_-1 is the number of hidden units in previous layer
         #     H is the number of hidden units in this layer.        
-        self.d_w = np.zeros_like(self.w)
-
+        #self.d_w = np.zeros_like(self.w)
+        inputT = np.transpose(self.inputs)
+        self.d_w = np.dot(inputT, d_scores) / d_scores.shape[0]
+        
         # d_inputs:
         #     Derivatives of the loss w.r.t the previous layer's activations/outputs.
         #     A matrix of shape (N, H_-1)
         #     N is the number of data points.
         #     H_-1 is the number of hidden units in the previous layer.
-        d_inputs = np.zeros([d_scores.shape[0], self.w.shape[0]])
+        wT = np.transpose(self.w)
+        d_inputs = np.dot(d_scores, wT)
 
         # End of the code to modify
         ###################################
