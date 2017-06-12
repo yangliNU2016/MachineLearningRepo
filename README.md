@@ -15,7 +15,7 @@ The task of this project is to optimize hyperparameters of CNN to maximize the t
 In this project, I use CNN to train and test on MNIST dataset which is developed for evaluating machine learning moodels on hand-written digit recognition problem. Five hyperparameters to optimize are: learning rate, training iterations, batch size, display steps, and dropout.    
 
 ### Show of Work
-![Image](https://github.com/yangliNU2016/MachineLearningRepo/blob/master/Course%20Project/Pics/table.png)
+![Image](https://github.com/yangliNU2016/MachineLearningRepo/blob/master/Course%20Project/Pics%26Paper/table.png)
 
 Here is the output table. I manage to optimize the above five hyperparameters to achieve a testing accuracy 0.988281. Here are some observations:
 
@@ -25,7 +25,8 @@ Here is the output table. I manage to optimize the above five hyperparameters to
 - From 0 to 1 the bigger the dropouts are the better training accuracies are; from 1 to infinity the bigger the dropouts are the worse training accuracies are.  
 
 ### Details and Code
-
+Paper: [Link](https://github.com/yangliNU2016/MachineLearningRepo/blob/master/Course%20Project/Pics%26Paper/hyperparameter-optimazation-convolutional.pdf)
+Code: [Link](https://github.com/yangliNU2016/MachineLearningRepo/tree/master/Course%20Project/NeuralNetworks)
 
 
 ```markdown
