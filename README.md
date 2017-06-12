@@ -20,29 +20,10 @@ In this project, I use CNN to train and test on MNIST dataset which is developed
 Here is the output table. I manage to optimize the above five hyperparameters to achieve a testing accuracy 0.988281. Here are some observations:
 
 - To achieve decent testing accuracies avoid too big or too small learning rates. 
-- To achieve decent testing accuracies make training iterations big and batch size small.
-- Display steps does not have any obvious influences on testing accuracies.
+- To achieve decent testing accuracies make training iterations big.
+- The number of display steps does not have any obvious influences on testing accuracies.
 - From 0 to 1 the bigger the dropouts are the better training accuracies are; from 1 to infinity the bigger the dropouts are the worse training accuracies are.  
 
 ### Details and Code
 Paper: [Link](https://github.com/yangliNU2016/MachineLearningRepo/blob/master/Course%20Project/Pics%26Paper/hyperparameter-optimazation-convolutional.pdf)
 Code: [Link](https://github.com/yangliNU2016/MachineLearningRepo/tree/master/Course%20Project/NeuralNetworks)
-
-
-```markdown
-
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
