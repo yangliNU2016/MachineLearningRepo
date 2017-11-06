@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)http://www.cs.northwestern.edu/~ddowney/courses/349_Spring2017/pset2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<title>EECS 349 Problem Set 2</title>
+
+</head>
+
+<body>
+
+<h1>EECS 349 Problem Set 2</h1>
+
+<h3>Due 11:59PM Friday Apr 14</h3>
+
+<p><small><i>Updated Apr 12 17:25:00 CDT 2017</i>
+
+</small></p>
+
+<hr>
+
+<p>
+In this assignment, you will work in teams of 2 or 3 to implement
+decision trees.  You should collaborate on the code, but each student must 
+turn in an individual homework write-up.
+
+</p><p>The algorithm you should implement is the same as that given in the 
+decision tree lecture slides (slide 24, the "ID3" algorithm), except
+(a) our ``default'' is a class value to output, rather than a Node as
+in the pseudocode, and (b) we will not use the "attributes" parameter.  Instead, you should
+terminate the tree-building when either the example set is empty
+<em>OR</em> all the examples have the same
+class value <em>OR</em> no non-trivial split of the examples is
+possible (i.e., there is no split that partitions the data into more than one
+non-empty set, i.e. all examples have the same attribute vector).  In the latter case, the node should assign the mode class value of the 
+examples (breaking ties arbitrarily).  [<em>Note: to prevent infinite recursion
+in certain corner cases, you should explicitly avoid making trivial splits -- 
+i.e. splits that result in all the examples sorting to the same child branch.  
+However, since this note was only added on Wednesday April 12, solutions that 
+do not handle these corner cases correctly will not be penalized.</em>]
+
+</p><p>We have written code to read in the data for you (<code>parse.py</code>).  
+It represents each
+example as a dictionary, with attributes stored as key:value pairs.
+The target output is stored as an attribute with the key "Class".
+
+</p><p></p><h3>Guidelines</h3>
+<ul>
+  <li>You should use Information Gain for choosing which attribute to split on.</li>
+  <li>You must handle missing attributes, but exactly how is up to you.</li>
+  <li>You must implement some kind of pruning. but exactly how is up to you.</li>
+  <li>You must adhere to the signature in the ID3.py file.  In particular,
+      you must implement the four given methods as described in that file.  
+	You can and should define additional methods in ID3.py, and additional
+	fields in the Node class.</li>
+  <li>You do not need to handle numeric attributes, but your code should work for categorical 
+	attributes with an arbitrary number of attribute values, and an arbitrary number
+	of output classes.</li>
+  <li>You do not need to import any additional modules.  You are allowed to import
+	general modules if you want (e.g. numpy) but of course, do not import
+	a decision tree implementation (e.g. scikit-learn).</li>
+</ul>
+
+<p></p><h3>Steps to complete the homework</h3>
+<ul>
+  <li>Get the <a href="http://www.cs.northwestern.edu/~ddowney/courses/349_Spring2017/PS2.zip">code and data files</a>.</li>
+  <li>Complete the decision tree code.  Implement 
+	the four methods in <code>ID3.py</code>, adding new methods as necessary.
+	You will also need to change <code>node.py</code>.
+	We have included a few tests in unit_tests.py that you can run
+	individually, to check your methods.  <em>NOTE: that depending on how you implement
+	pruning, the pruning test may not pass even if your implementation is acceptable.</em></li>
+  <li>Create a PDF document with the answers to the following questions:
+    <ol>
+      <li>(0.5 points) Which other students are in your group? (either names or netIDs is fine)</li>
+      <li>(0.5 points) Did you alter the Node data structure?  If so, how and why? (2 sentences)</li>
+      <li>(1 point) How did you handle missing attributes, and why did you choose this strategy?
+	(2 sentences)</li>
+      <li>(1 point) How did you perform pruning, and why did you choose this strategy? (4 sentences)</li>
+      <li>(2 points) Now you will try your learner on the <code>house_votes_84.data</code>, and 
+	plot learning curves.
+	Specifically, you should experiment under two settings:
+	with pruning, and without pruning.  Use training set sizes ranging between 10 and 300
+	examples.
+	For each training size you choose, perform 100 random runs,
+	for each run testing on all examples not used for training (see 
+	<code>testPruningOnHouseData</code> from <code>unit_tests.py</code> for one example of this).  Plot the average 
+	accuracy of the 100 runs as one point on a learning curve (x-axis = number of training examples,
+	y-axis = accuracy on test data).
+	Connect the points to show one line representing accuracy <em>with</em> pruning, the other <em>without</em>.
+	Include your plot in your pdf, and answer two questions:
+        <ol type="a">
+          <li>In about a sentence, what is the general trend of both lines as training set size increases, and why does this make sense?</li>
+          <li>In about two sentences, how does the advantage of pruning change
+	as the data set size increases?  Does this make sense, and why or why not?</li>
+        </ol>
+        <em>Note: depending on your particular approach, pruning may not improve accuracy consistently
+	or may decrease it.  You can still receive full credit for this as long as your
+	approach is reasonable and correctly implemented.</em></li>
+    </ol>	
+  </li>
+</ul>
+
+The correct functionality of your code is then worth five points, making 
+a total of ten points for the assignment.
+
+<p>One last suggestion: You may find it helpful to consult the starter code from <a href="http://www.cs.northwestern.edu/~ddowney/courses/349_Spring2016/PS2.pdf">last year's
+decision tree homework</a> for reference, 
+but be aware that that assignment involved continuous attributes and used a much more complex design than you will need for this homework.
+
+
+<a id="submission"></a></p><h3><a id="submission">Submission Instructions</a></h3>
+
+<p>You'll turn in your homework as a single zip file, in Canvas.
+
+Specifically: </p>
+
+<ol>
+<li>Create a single pdf file PS2.pdf with the answers to the questions above,
+ and your graphs.</li>
+<li>Create a single ZIP file containing:
+
+<ul>
+  <li><code>PS2.pdf</code></li>
+
+  <li>All of your <code>.py</code> code files</li>
+</ul>
+
+</li>
+
+<li>Turn the zip file in under Problem Set 2 in Canvas.
+
+</li>
+
+</ol>
+
+<hr>
+
+
+
+
+
+
+
+</body></html>
